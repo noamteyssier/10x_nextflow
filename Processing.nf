@@ -219,7 +219,7 @@ process PlotQC {
     adata = sc.read_h5ad("${h5ad}")
 
     # Generate Axis
-    knee = np.sort(adata.X.toarray().sum(axis=1).flatten())[::-1]
+    knee = np.sort(np.asarray(adata.X.sum(axis=1)).ravel())[::-1]
     ranks = np.arange(knee.size)
 
     # Fraction of UMIs kept with filter
