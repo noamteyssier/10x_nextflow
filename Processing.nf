@@ -271,7 +271,7 @@ process FilterNormLog {
     sc.pp.filter_genes(adata, min_counts=${params.gene_cell_threshold})
 
     # Set Raw Data
-    adata.raw = adata.copy()
+    adata.layers["counts"] = adata.X.copy()
 
     # Normalize and Log
     sc.pp.normalize_total(adata, target_sum=1e4)
@@ -333,7 +333,7 @@ process Merge {
     
     adata.var["ensembl_id"] = adata.var.index
     adata.var["gene_symbol"] = adata.var["ensembl_id"].map(g2s)
-    adata.var.index = adata.var["gene_symbol"]
+    adata.var.set_index("gene_symbol", inplace=True)
     adata.var_names_make_unique()
 
     adata.write_h5ad("adata.h5ad")
